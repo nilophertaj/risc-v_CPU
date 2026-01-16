@@ -200,4 +200,142 @@ endmodule
 
 ```
 
+# Waveform Analysis – 5-Stage Pipelined RISC-V Processor
 ## Output Waveform using GTKWave
+![alt](https://github.com/nilophertaj/risc-v_CPU/blob/9a35c8afe883e09694cae0c1f0cf27bf6ce54e97/5%20stage%20pipelined%20RISC-V/full_pipeline.png)
+
+## Important Signals to Add in GTKWave
+
+### 1. Global Signals
+These confirm correct timing and synchronization.
+- `clk`
+- `reset`
+
+---
+
+### 2. Instruction Fetch (IF) Stage
+These signals verify instruction fetching.
+- `pc`
+- `pc4`
+- `instr`
+
+✔ Check:
+- `pc` increments by 4 every cycle
+- `instr` changes according to `pc`
+
+---
+
+### 3. IF/ID Pipeline Register
+These signals show instruction transfer to the decode stage.
+- `ifid_instr`
+- `ifid_pc4`
+
+✔ Check:
+- `ifid_instr` holds the previous cycle’s `instr`
+- Confirms one-cycle pipeline delay
+
+---
+
+### 4. Instruction Decode (ID) Stage
+These signals verify decoding and register read.
+- `rs1_data`
+- `rs2_data`
+- `imm`
+- `regwrite`
+- `alusrc`
+
+✔ Check:
+- `rs1_data` and `rs2_data` match register file contents
+- `imm` is sign-extended correctly
+- Control signals are generated correctly based on opcode
+
+---
+
+### 5. ID/EX Pipeline Register
+These confirm decoded values are passed to execute stage.
+- `idex_rs1`
+- `idex_rs2`
+- `idex_imm`
+- `idex_regwrite`
+- `idex_alusrc`
+
+✔ Check:
+- Values match ID stage but delayed by one cycle
+- Confirms correct pipeline register operation
+
+---
+
+### 6. Execute (EX) Stage
+These signals verify ALU operation.
+- `alu_result`
+- `alu_b` (selected operand)
+
+✔ Check:
+- `alu_result` equals expected computation
+- Operand selection depends on `alusrc`
+
+---
+
+### 7. EX/MEM Pipeline Register (If Implemented)
+- `exmem_alu_result`
+- `exmem_rs2_data`
+- `exmem_regwrite`
+
+✔ Check:
+- Values are forwarded correctly to memory stage
+
+---
+
+### 8. Memory Access (MEM) Stage
+- `mem_read_data`
+- `exmem_memread`
+- `exmem_memwrite`
+
+✔ Check:
+- Memory accessed only when control signals are asserted
+
+---
+
+### 9. Write Back (WB) Stage
+These signals verify final result write-back.
+- `memwb_rd`
+- `wb_data`
+- `memwb_regwrite`
+
+✔ Check:
+- `wb_data` written only when `memwb_regwrite = 1`
+- Correct destination register selected
+
+---
+
+## Pipeline Behavior Verification
+
+### Instruction Flow Check
+✔ One instruction enters the pipeline every cycle  
+✔ Different instructions occupy different stages simultaneously  
+✔ No stage overwrites another stage’s data  
+
+This confirms **true pipelined execution**.
+
+---
+
+### Timing Check
+✔ Same instruction appears across IF → ID → EX → MEM → WB in consecutive cycles  
+✔ Total latency = 5 cycles per instruction  
+✔ Throughput = 1 instruction per cycle after pipeline fill  
+
+---
+
+## What This Design Represents
+
+| Feature        | Status |
+|---------------|--------|
+| Pipeline Type | 5-Stage |
+| Hazard Handling | ❌ No |
+| Forwarding | ❌ No |
+| Branch Handling | ❌ No |
+| Focus | Learning & Clarity |
+
+This is a **baseline pipelined RISC-V design**, used as a foundation for advanced features.
+
+
