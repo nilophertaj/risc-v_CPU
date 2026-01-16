@@ -61,6 +61,7 @@ The processor follows a classic **single-cycle datapath**, where each instructio
 ---
 
 ## Project Structure
+```verilog
 single_cycle_riscv/
 ├── rtl/
 │   ├── pc.v
@@ -74,7 +75,7 @@ single_cycle_riscv/
 │   └── top.v
 ├── tb/
     └── tb_top.v
-
+```
 
 ## Results
 - Correct instruction execution observed
