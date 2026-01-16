@@ -46,7 +46,7 @@ This is a **baseline design**, meaning no forwarding, stalling, or branch hazard
 
 ## Tools Used
 - **HDL**: Verilog
-- **Simulator**: Cadence Xcelium / Icarus Verilog
+- **Simulator**: Icarus Verilog
 - **Waveform Viewer**: GTKWave
 
 ---
